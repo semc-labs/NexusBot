@@ -1,4 +1,4 @@
-# TestBot
+# NexusBot
 Work in Progress 
 
 A simple discord bot which will track channel messages and integrate with WordPress.
