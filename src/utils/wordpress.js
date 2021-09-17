@@ -49,18 +49,17 @@ export default class WordPress {
 			try {
 				await axios.post(`https://${process.env.WP_DOMAIN}/wp-json/wp/v2/posts`, 
 					{
-						title: 'Announcement: '.msg.author.username,
+						title: 'Announcement: '+msg.author.username,
 						content: msg.content,
 						status: 'draft',
-  						categories: ['announcements']
+  						categories: [73]
 					},
 					{
 						headers: { Authorization: `Bearer ${wordpress.serverToken}` }
 					}
-					// config
 				);
 			}catch(e) {
-				console.log(e.message);
+				console.log('WP postAnnouncement: ',e.message);
 			}
 		}
 	}
