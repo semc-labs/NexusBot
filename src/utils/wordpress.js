@@ -52,7 +52,8 @@ export default class WordPress {
 						title: 'Announcement: '+msg.author.username,
 						content: msg.content,
 						status: 'draft',
-  						categories: [73]
+  						categories: [process.env.WP_CAT_ID],
+						featured_media: process.env.WP_IMAGE_ID
 					},
 					{
 						headers: { Authorization: `Bearer ${wordpress.serverToken}` }
