@@ -19,7 +19,7 @@ Add all relevent config variables to the .env file. See .env-example for require
 npm start
 ```
 
-## PRODUCTION START
+## Production Start (Optional)
 Requires npm [pm2](https://www.npmjs.com/package/pm2)
 
 Install
