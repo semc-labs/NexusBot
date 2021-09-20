@@ -6,6 +6,7 @@ import { Announcements } from "../data/models/announcements.js";
 import Deps from '../utils/deps.js';
 import { Client } from 'discord.js';
 import moment from 'moment';
+import WordPress from '../utils/wordpress.js';
 
 
 
@@ -225,6 +226,8 @@ routes.get('/refresh', (req, res) => {
 		ChannelMessages.setup();
 		Users.setup();
 		Announcements.setup();
+
+		WordPress.authenticate();
 
 		res.end( JSON.stringify({success: true}) );
 	}catch(e) {
