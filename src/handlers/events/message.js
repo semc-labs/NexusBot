@@ -29,6 +29,8 @@ export default class extends Event {
     const date = moment().format("YYYY-MM-DD");
 
     try {
+      console.log(`Message from ${msg.author.username} on channel ${msg.channel.name}`);
+
       // CREATE / FIND channel
       await Channels.findOrCreate(msg.channel.id);
 

@@ -1,7 +1,9 @@
-Where to host? https://geekflare.com/discord-bot-hosting/
+1. Setup /subscribe email@email.com slash command
+2. Some kind of scheduler?
 
-Figure out how to host on a public server (jboullion.com) while pointing at my local address
 
-Discord API Limit is 50 req/sec. We should do some more sqlite caching to reduce the number of calls
-
-Setup wordpress options / settings page to store some info on the wordpress side (like the localhost / https://xxx.localhost.run URLS)
+OLD Oauth redirects
+http://localhost:8080/
+http://localhost:53134
+http://localhost:3000/auth
+http://localhost:3000/auth-guild

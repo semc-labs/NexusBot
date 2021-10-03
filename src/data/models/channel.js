@@ -74,11 +74,11 @@ export class Channels {
 		});
 	}
 
-	static setup(){
+	static async setup(){
 		const bot = Deps.get(Client);
 
-		bot.channels.cache.forEach(channel => {
+		await bot.channels.cache.forEach(channel => {
 			this.findOrCreate(channel.id);
-		})
+		}, Promise.resolve())
 	}
 }
