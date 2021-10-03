@@ -1,6 +1,9 @@
 node_modules
 .env
 .env-jboullion
+.env-nexus
 .env.local
 database.sqlite
 config.json
+config.js
+/old

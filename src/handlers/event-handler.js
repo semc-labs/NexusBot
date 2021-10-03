@@ -3,10 +3,10 @@ import { bot } from "../bot.js";
 
 export class EventHandler {
   async init() {
-    const filenames = readdirSync("./src/handlers/events");
+    const eventFiles = readdirSync("./src/handlers/events");
 
-    for (const name of filenames) {
-      const { default: Event } = await import(`./events/${name}`);
+    for (const file of eventFiles) {
+      const { default: Event } = await import(`./events/${file}`);
       const event = new Event();
 
       if (!event.on) continue;
@@ -14,6 +14,19 @@ export class EventHandler {
       bot.on(event.on, event.invoke.bind(event));
     }
 
-    console.log(`${filenames.length - 1} events were loaded`);
+    console.log(`${eventFiles.length - 1} events were loaded`);
+
+
+    bot.commands = new Map();
+    const commandFiles = readdirSync('./src/handlers/commands');
+
+    for (const file of commandFiles) {
+      const command = await import(`./commands/${file}`);
+      // Set a new item in the Collection
+      // With the key as the command name and the value as the exported module
+      bot.commands.set(command.data.name, command);
+    }
+
+    console.log(`${commandFiles.length} commands were loaded`);
   }
 }

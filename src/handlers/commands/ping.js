@@ -1,10 +1,8 @@
-import Command from "./commands.js";
+import { SlashCommandBuilder } from '@discordjs/builders';
 
-export default class extends Command {
-  name = "ping";
-
-  async execute(msg) {
-    // console.log("Ping Test!");
-    await msg.reply("Pong!");
-  }
+export const data = new SlashCommandBuilder()
+  .setName('ping')
+  .setDescription('Replies with Pong!');
+export async function execute(interaction) {
+  await interaction.reply('Pong!');
 }

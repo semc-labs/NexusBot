@@ -122,7 +122,9 @@ export class ChannelMessages {
 				return channel
 			}).then((channel)=>{
 				//console.log(channel);
-				ChannelMessage.bulkCreate(channel)
+				ChannelMessage.bulkCreate(channel, {
+					ignoreDuplicates: true
+				})
 			});
 		});
 	}

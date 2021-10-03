@@ -50,7 +50,7 @@ export class Announcements {
 		return await Announcement.create({ 
 			announcementId: msg.id,
 			channelId: msg.channel.id,
-			userId: msg.member.id,
+			userId: msg.author.id,
 			//author: JSON.stringify(bot.users.cache.get(m.member.id)),
 			content: msg.content,
 			pinned: msg.pinned,

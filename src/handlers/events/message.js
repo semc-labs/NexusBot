@@ -1,6 +1,6 @@
 import Event from "./event.js";
-import { CommandHandler } from "../command-handler.js";
-import Deps from "../../utils/deps.js";
+//import { CommandHandler } from "../command-handler.js";
+//import Deps from "../../utils/deps.js";
 import WordPress from "../../utils/wordpress.js";
 
 import { ChannelMessages } from "../../data/models/channel-message.js";
@@ -14,12 +14,6 @@ import { Users } from "../../data/models/users.js";
 
 export default class extends Event {
   on = "message";
-
-  constructor() {
-    super();
-    this.commandHandler = Deps.get(CommandHandler);
-    //this.guilds = Deps.get(Guilds);
-  }
 
   async invoke(msg) {
     // Don't reply to bots
@@ -48,14 +42,7 @@ export default class extends Event {
       }
 
     }catch(e) {
-      console.log(e);
-    }
-
-    //const savedGuild = await this.guilds.get(msg.guild.id);
-    const prefix = '.';//savedGuild.prefix;
-
-    if (msg.content.startsWith(prefix)) {
-      return this.commandHandler.handle(prefix, msg);
+      console.error(e);
     }
   }
 }

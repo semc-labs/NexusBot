@@ -8,8 +8,6 @@ import { routes } from "./routes/index.js";
 // Environment Variables
 config({ path: ".env" });
 
-// Initialize Event Handler and set it up as a dependency
-Deps.get(EventHandler).init();
 
 // https://discord.com/developers/docs/topics/gateway#gateway-intents
 export const bot = Deps.add(
@@ -20,11 +18,14 @@ export const bot = Deps.add(
 	})
 );
 
+// Initialize Event Handler and set it up as a dependency
+Deps.get(EventHandler).init();
+
 // Connect bot to Discord
 bot.login(process.env.BOT_TOKEN);
-  
+
 // Start server
-const server = routes.listen(8081, function () {
+const server = routes.listen(process.env.PORT, function () {
 	//const host = server.address().address
 	const port = server.address().port
 	console.log(`Nexus Aurora API listening at http://localhost:${port}`)
