@@ -4,11 +4,11 @@
 // // import Deps from "../../utils/deps.js";
 // // import { MessageEmbed } from "discord.js";
 
-// import { ChannelMessage, ChannelMessages } from "../../data/models/channel-message.js";
-// import { Channel, Channels } from "../../data/models/channel.js";
-// import { Announcement, Announcements } from "../../data/models/announcements.js";
-// import { User, Users } from "../../data/models/users.js";
-// import WordPress from "../../utils/wordpress.js";
+import { ChannelMessage, ChannelMessages } from "../../data/models/channel-message.js";
+import { Channel, Channels } from "../../data/models/channel.js";
+import { Announcement, Announcements } from "../../data/models/announcements.js";
+import { User, Users } from "../../data/models/users.js";
+import WordPress from "../../utils/wordpress.js";
 
 
 // // const embed = new MessageEmbed()
@@ -46,6 +46,29 @@
 
 export const name = 'ready';
 export const once = true;
-export function execute(client) {
+export async function execute(bot, client) {
   console.log(`Ready! Logged in as ${client.user.tag}`);
+  console.log(`${bot.user.username} is online`);
+  bot.user.setActivity('Everything', { type: 'WATCHING'});
+
+  // force will reset and rebuild the sqlite databases
+  const force = false;
+
+  await Channel.sync({ force: force })
+  await Channels.setup();
+  await ChannelMessage.sync({ force: force });
+  await ChannelMessages.setup();
+  await Announcement.sync({ force: force });
+  await Announcements.setup();
+
+  ChannelMessage.belongsTo(Channel, { foreignKey: 'channelId' });
+  Announcement.belongsTo(User, { foreignKey: 'userId' });
+
+  Channel.hasMany(ChannelMessage, { foreignKey: 'channelId' });
+
+
+  User.sync({ force: force }).then(() => Users.setup());
+  User.hasMany(Announcement, { foreignKey: 'userId' });
+
+  WordPress.authenticate();
 }

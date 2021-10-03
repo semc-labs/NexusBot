@@ -1,8 +1,5 @@
-import { bot } from "../../bot.js";
-
-
 export const name = 'interactionCreate';
-export async function execute(interaction) {
+export async function execute(bot, interaction) {
 	if (!interaction.isCommand()) return;
 
 	const command = bot.commands.get(interaction.commandName);

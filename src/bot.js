@@ -39,9 +39,9 @@ const eventFiles = readdirSync("./src/handlers/events");
 for (const file of eventFiles) {
 	const event = await import(`./handlers/events/${file}`);
 	if (event.once) {
-		bot.once(event.name, (...args) => event.execute(...args));
+		bot.once(event.name, (...args) => event.execute(bot, ...args));
 	} else {
-		bot.on(event.name, (...args) => event.execute(...args));
+		bot.on(event.name, (...args) => event.execute(bot, ...args));
 	}
 }
 

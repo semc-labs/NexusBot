@@ -56,6 +56,8 @@ export class Announcements {
 			pinned: msg.pinned,
 			mentions: JSON.stringify(msg.mentions),
 			createdAt: msg.createdTimestamp
+		},{
+			ignoreDuplicates: true
 		});
 	}
 
