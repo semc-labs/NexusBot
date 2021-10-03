@@ -40,6 +40,19 @@ Setup local tunnel to localhost
 ssh -R 80:localhost:8081 localhost.run
 ```
 
+
+### Development Hosting with ngrok
+
+Follow this [ngrok setup guide](https://dashboard.ngrok.com/get-started/setup)
+
+If you are on windows you can use 'ngrok.exe' instead of adding it to your path
+
+point ngrok to our local port using
+```sh
+ngrok http 8081
+```
+Then set the https url ngrok generates in the NexusBot_Plugin settings
+
 ### External Requirements
 * [JWT Authentication for WP REST API](https://wordpress.org/plugins/jwt-authentication-for-wp-rest-api/)
 * [Discord Bot](https://discord.com/developers/applications)

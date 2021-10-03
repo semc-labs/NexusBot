@@ -77,7 +77,8 @@ routes.get('/messages', (req, res) => {
 			if(m.channelId == process.env.ANNOUNCEMENTS_ID) return true;
 			if(! m.usageCount) return true;
 
-			const channel = bot.channels.cache.get(m.channelId);
+			const channel = bot.channels.cache.get(m.channelId)
+			// channel.name = channel.name.replace('[\u1000-\uFFFF]+', ''); // need to remove emojis to order them
 			var message = messages.find(m => m.name === channel.name );
 			var dateISO = new Date(m.date).toISOString();
 			var unixTimestamp = parseInt(moment(dateISO).format('x'));
@@ -93,6 +94,8 @@ routes.get('/messages', (req, res) => {
 			}
 			
 		});
+
+		// messages.sort((a, b) => a.name.localeCompare(b.name));
 		res.end( JSON.stringify(messages));
 	});
 });
