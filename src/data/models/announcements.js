@@ -22,7 +22,7 @@ export const Announcement = sequelize.define('announcements', {
 		allowNull: false,
 	},
 	pinned: {
-		type: Sequelize.TINYINT,
+		type: Sequelize.INTEGER,
 		allowNull: false
 	},
 	mentions: {
@@ -53,7 +53,7 @@ export class Announcements {
 			userId: msg.author.id,
 			//author: JSON.stringify(bot.users.cache.get(m.member.id)),
 			content: msg.content,
-			pinned: msg.pinned,
+			pinned: msg.pinned?1:0,
 			mentions: JSON.stringify(msg.mentions),
 			createdAt: msg.createdTimestamp
 		},{
