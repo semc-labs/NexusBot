@@ -66,3 +66,4 @@ Then set the https url ngrok generates in the NexusBot_Plugin settings
 * [DiscordJS](https://discord.js.org/)
 * [Sequelize](https://sequelize.org/)
 * [SQLite](https://www.sqlite.org/index.html)
+* [Dokku (Hosting)](https://dokku.com)

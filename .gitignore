@@ -3,6 +3,7 @@ node_modules
 .env-jboullion
 .env-nexus
 .env.local
+package-lock.json
 database.sqlite
 config.json
 config.js
