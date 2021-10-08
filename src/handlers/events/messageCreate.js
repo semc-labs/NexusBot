@@ -9,7 +9,6 @@ import WordPress from "../../utils/wordpress.js";
 
 export const name = 'messageCreate';
 export async function execute(bot, msg) {
-  console.log(`Message from ${msg.author.username} on channel ${msg.channel.name}`);
   if (!msg.guild || msg.author.bot) return;
 
   //const date = moment(new Date().toISOString()).format("YYYY-MM-DD");
