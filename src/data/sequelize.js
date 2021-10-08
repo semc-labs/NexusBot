@@ -9,4 +9,4 @@ import Sequelize from 'sequelize';
 // 	//query: { raw:true } // https://github.com/sequelize/sequelize/issues/6408
 // });
 
-export const sequelize = new Sequelize('postgres://postgres:password@localhost:5432/nexusbot')
+export const sequelize = new Sequelize("postgresql://postgres:"+process.env.DB_PASSWORD+"@"+process.env.DB_URL+":"+process.env.DB_PORT+"/"+process.env.DB_NAME);
