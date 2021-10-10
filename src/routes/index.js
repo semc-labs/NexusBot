@@ -156,44 +156,75 @@ routes.get('/members', async (req, res) => {
 
 	const bot = Deps.get(Client);
 
-	// Get our server
+	// // Get our server
 	const guild = bot.guilds.cache.get(process.env.SERVER_ID);
 
-	let members = [];
+	if(! guild){
+		// We SHOULD always have a guild, but sometimes it returns as undefined
+		return [];
+	}
 
-	guild.members.cache.forEach(m => {
-		const user = bot.users.cache.get(m.user.id);
-		let roles = [];
-		m.roles.cache.forEach((role) => {
-			roles.push(guild.roles.cache.get(role.id));
-		}) 
+	// let members = [];
+
+	// guild.members.cache.forEach(m => {
+	// 	const user = bot.users.cache.get(m.user.id);
+	// 	let roles = [];
+	// 	m.roles.cache.forEach((role) => {
+	// 		roles.push(guild.roles.cache.get(role.id));
+	// 	}) 
 		
-		members.push({...user, avatarURL: m.user.displayAvatarURL(), presence: m.presence, roles: roles});
-	});
-
-	res.end( JSON.stringify(members) );
-
-	// -----------------------------------------------------
-	// GET all users from sqlite [ NO PRESENCE ]
-
-	// const users = await Users.findAll();
-	// users.forEach(m => {
-	// 	m.info = JSON.parse(m.info);
+	// 	members.push({...user, avatarURL: m.user.displayAvatarURL(), presence: m.presence, roles: roles});
 	// });
 
-	// res.end( JSON.stringify(users) );
+	// res.end( JSON.stringify(members) );
 
 	// -----------------------------------------------------
-	// GET user counts
+	// GET all users from DB
 
-	// var userCount = guild.memberCount;
-	// console.log(guild.members.cache)
-	// var onlineCount = guild.members.cache.filter(m => m.presence.status === 'online').size
+	const users = await Users.findAll();
 
-	// // console.log('%c Guild Info', 'color: green; font-weight: bold;')
-	// console.log("userCount: ", userCount)
-	// console.log("onlineCount: ", onlineCount)
-	// res.end( JSON.stringify(guild.members.cache) );
+	const nonBotUsers = users.filter(u => {
+		u.user = JSON.parse(u.user);
+		return !u.user.bot;
+	});
+
+	nonBotUsers.forEach(m => {
+		m.info = JSON.parse(m.info);
+
+		// Get a user from cache to determine presense
+		const member = guild.members.cache.get(m.userId);
+
+		let roles = [];
+
+		if(member){
+			//console.log(member);
+			m.presence = member.presence;
+			member.roles.cache.forEach((role) => {
+				roles.push(guild.roles.cache.get(role.id));
+			})
+			m.avatarURL = member.user.displayAvatarURL()
+			m.bot = member.user.bot;
+		}else{
+			m.presence = [];
+			m.info.roles.forEach((role) => {
+				roles.push(guild.roles.cache.get(role));
+			})
+			m.avatarURL = m.info.avatarURL;
+			m.bot = m.info.bot;
+		}
+
+		m.roles = roles;
+
+	});
+
+	//console.log('users:', users);
+
+	res.end( JSON.stringify(nonBotUsers, (key, value) =>
+		typeof value === 'bigint'
+			? value.toString()
+			: value // return everything else unchanged
+	) );
+
 });
 
 
@@ -205,6 +236,12 @@ routes.get('/members/:id', (req, res) => {
 		const bot = Deps.get(Client);
 
 		const guild = bot.guilds.cache.get(process.env.SERVER_ID);
+
+		if(! guild){
+			// We SHOULD always have a guild, but sometimes it returns as undefined
+			return [];
+		}
+
 		const member = guild.members.cache.get(req.params.id);
 
 		let roles = [];

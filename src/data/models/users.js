@@ -17,6 +17,10 @@ export const User = sequelize.define('users', {
 	info: {
 		type: Sequelize.TEXT,
 		allowNull: false,
+	},
+	user: {
+		type: Sequelize.TEXT,
+		allowNull: false,
 	}
 });
 
@@ -39,7 +43,7 @@ export class Users {
 	 */
 	static async findOrCreate(userId) {
 		// -------------------------------------
-		// Check out SQLITE before creating from the bot.cache
+		// Check our DB before creating from the bot.cache
 
 		const user = await this.get( userId );
 
@@ -50,27 +54,16 @@ export class Users {
 		const bot = Deps.get(Client);
 		const newUser = bot.users.cache.get(userId);
 
-		return await User.create({ 
-			userId: userId, 
-			name: newUser.username, 
-			info: JSON.stringify(newUser) 
-		});
-		
+		if(newUser){
+			return await User.create({ 
+				userId: userId, 
+				name: newUser.username, 
+				info: JSON.stringify(newUser) 
+			});
+		}
 
-		// -------------------------------------
-		// Find user in out bot.cache. Find or Create them in our SQLITE
+		return null;
 
-		// const bot = Deps.get(Client);
-		// const newUser = bot.users.cache.get(userId);
-
-		// return await User.findOrCreate({
-		// 	where: { userId: userId },
-		// 	defaults: { 
-		// 		userId: userId, 
-		// 		name: newUser.username, 
-		// 		info: JSON.stringify(newUser) 
-		// 	}
-		// });
 	}
 
 	/**
@@ -88,23 +81,21 @@ export class Users {
 	static setup(){
 		const bot = Deps.get(Client);
 
-		bot.users.cache.forEach(user => {
-			this.findOrCreate(user.id);
-		})
+		const guild = bot.guilds.cache.get(process.env.SERVER_ID);
 
-		// const guild = bot.guilds.cache.get(process.env.SERVER_ID);
+		guild.members.fetch().then(members => {
+			let dbMembers = []
 
-		// let members = [];
-	
-		
-		// guild.members.cache.forEach(m => {
-		// 	const user = bot.users.cache.get(m.user.id);
-		// 	let roles = [];
-		// 	m.roles.cache.forEach((role) => {
-		// 		roles.push(guild.roles.cache.get(role.id));
-		// 	}) 
+			members.forEach(async member => {
+				dbMembers.push({userId: member.id, name:member.displayName, info: JSON.stringify(member), user: JSON.stringify(member.user) });
+			});
 			
-		// 	members.push({...user, avatarURL: m.user.displayAvatarURL(), presence: m.presence, role: roles});
-		// });
+			return dbMembers
+
+		}).then((dbMembers)=>{
+			User.bulkCreate(dbMembers, {
+				ignoreDuplicates: true
+			})
+		});
 	}
 }

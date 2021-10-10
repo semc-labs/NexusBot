@@ -13,8 +13,8 @@ export async function execute(bot, client) {
   console.log(`${bot.user.username} is online`);
   bot.user.setActivity('Everything', { type: 'WATCHING'});
 
-  // force will reset and rebuild the sqlite databases
-  const force = false;
+  // force will reset and rebuild the database
+  const force = true;
 
   await Channel.sync({ force: force })
   await Channels.setup();
@@ -22,14 +22,13 @@ export async function execute(bot, client) {
   await ChannelMessages.setup();
   await Announcement.sync({ force: force });
   await Announcements.setup();
+  await User.sync({ force: force });
+  await Users.setup();
 
   ChannelMessage.belongsTo(Channel, { foreignKey: 'channelId' });
   Announcement.belongsTo(User, { foreignKey: 'userId' });
 
   Channel.hasMany(ChannelMessage, { foreignKey: 'channelId' });
-
-
-  User.sync({ force: force }).then(() => Users.setup());
   User.hasMany(Announcement, { foreignKey: 'userId' });
 
   WordPress.authenticate();
