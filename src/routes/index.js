@@ -14,6 +14,7 @@ export const routes = express();
 
 routes.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
+	res.setHeader("Content-Type", "application/json");
 	// res.header("Access-Control-Allow-Origin", "localhost:8080"); // update to match the domain you will make the request from
 	// res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	next();
@@ -21,7 +22,7 @@ routes.use(function(req, res, next) {
 
 // Online notice
 routes.get('/', (req, res) => {
-	res.end( 'Nexus Aurora Discord Bot is online' );
+	res.end( JSON.stringify('Nexus Aurora Discord Bot is online') );
 });
 
 // GET single channel by parameter 'channelId
