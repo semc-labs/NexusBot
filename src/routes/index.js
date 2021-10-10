@@ -181,14 +181,14 @@ routes.get('/members', async (req, res) => {
 	// -----------------------------------------------------
 	// GET all users from DB
 
-	const users = await Users.findAll();
+	const users = await Users.findAll({ bot: 0 });
 
-	const nonBotUsers = users.filter(u => {
-		u.user = JSON.parse(u.user);
-		return !u.user.bot;
-	});
+	// const nonBotUsers = users.filter(u => {
+	// 	u.user = JSON.parse(u.user);
+	// 	return !u.user.bot;
+	// });
 
-	nonBotUsers.forEach(m => {
+	users.forEach(m => {
 		m.info = JSON.parse(m.info);
 
 		// Get a user from cache to determine presense
@@ -219,7 +219,7 @@ routes.get('/members', async (req, res) => {
 
 	//console.log('users:', users);
 
-	res.end( JSON.stringify(nonBotUsers, (key, value) =>
+	res.end( JSON.stringify(users, (key, value) =>
 		typeof value === 'bigint'
 			? value.toString()
 			: value // return everything else unchanged

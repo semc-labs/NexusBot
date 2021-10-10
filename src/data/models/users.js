@@ -14,14 +14,14 @@ export const User = sequelize.define('users', {
 		type: Sequelize.STRING,
 		allowNull: false,
 	},
+	bot: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+	},
 	info: {
 		type: Sequelize.TEXT,
 		allowNull: false,
 	},
-	user: {
-		type: Sequelize.TEXT,
-		allowNull: false,
-	}
 });
 
 export class Users {
@@ -87,7 +87,7 @@ export class Users {
 			let dbMembers = []
 
 			members.forEach(async member => {
-				dbMembers.push({userId: member.id, name:member.displayName, info: JSON.stringify(member), user: JSON.stringify(member.user) });
+				dbMembers.push({userId: member.id, name:member.displayName, bot: member.user.bot?1:0, info: JSON.stringify(member),  });
 			});
 			
 			return dbMembers
