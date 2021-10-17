@@ -10,3 +10,5 @@ config.js
 /old
 
 personal-notes.txt
+
+*.log

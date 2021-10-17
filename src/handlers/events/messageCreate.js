@@ -9,31 +9,39 @@ import WordPress from "../../utils/wordpress.js";
 
 export const name = 'messageCreate';
 export async function execute(bot, msg) {
-  if (!msg.guild || msg.author.bot) return;
+  if (msg.author.bot) return; // !msg.guild ||
 
-  //const date = moment(new Date().toISOString()).format("YYYY-MM-DD");
-  const date = moment().format("YYYY-MM-DD");
+  
+  if(!msg.guild){
+    // Direct Messages
+    console.log(`Direct Message from ${msg.author.username}`);
 
-  try {
-    console.log(`Message from ${msg.author.username} on channel ${msg.channel.name}`);
+  }else{
+    // Server Messages
+    //const date = moment(new Date().toISOString()).format("YYYY-MM-DD");
+    const date = moment().format("YYYY-MM-DD");
 
-    // CREATE / FIND channel
-    await Channels.findOrCreate(msg.channel.id);
+    try {
+      console.log(`Message from ${msg.author.username} on channel ${msg.channel.name}`);
 
-    // INCREMENT our channel message count
-    await ChannelMessages.update(msg, date);
+      // CREATE / FIND channel
+      await Channels.findOrCreate(msg.channel.id);
 
-    // Let's create this user 
-    await Users.findOrCreate(msg.member.id);
+      // INCREMENT our channel message count
+      await ChannelMessages.update(msg, date);
 
-    // POST this message to the wordpress site
-    if(msg.channel.id === process.env.ANNOUNCEMENTS_ID){
-      WordPress.postAnnouncement(msg);
+      // Let's create this user 
+      await Users.findOrCreate(msg.member.id);
 
-      Announcements.create(msg);
+      // POST this message to the wordpress site
+      if(msg.channel.id === process.env.ANNOUNCEMENTS_ID){
+        WordPress.postAnnouncement(msg);
+
+        Announcements.create(msg);
+      }
+
+    }catch(e) {
+      console.error(e);
     }
-
-  }catch(e) {
-    console.error(e);
   }
 }

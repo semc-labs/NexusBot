@@ -48,7 +48,7 @@ export class ChannelMessages {
 				where: { channelId: channelId, date: date }
 			});
 		}catch(e){
-			console.log('ChannelMessages findOne ', e);
+			console.error('ChannelMessages findOne ', e);
 		}
 
 		return false;
@@ -75,7 +75,7 @@ export class ChannelMessages {
 			}
 			return true;
 		}catch(e){
-			console.log('ChannelMessages update ', e);
+			console.error('ChannelMessages update ', e);
 			return false;
 		}
 	}

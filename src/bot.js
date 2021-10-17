@@ -1,4 +1,5 @@
 import { Client, Intents, Collection } from "discord.js";
+import { Sequelize } from 'sequelize';
 import { config } from "dotenv";
 //import { EventHandler } from "./handlers/event-handler.js";
 import Deps from "./utils/deps.js";
@@ -14,8 +15,14 @@ config({ path: ".env" });
 export const bot = Deps.add(
   Client,
   new Client({ 
-	  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES],
-	  partials: [] 
+	  intents: [
+			Intents.FLAGS.GUILDS, 
+			Intents.FLAGS.GUILD_PRESENCES, 
+			Intents.FLAGS.GUILD_MEMBERS, 
+			Intents.FLAGS.GUILD_MESSAGES,
+			Intents.FLAGS.DIRECT_MESSAGES
+		],
+		partials: ["CHANNEL"]
 	})
 );
 
