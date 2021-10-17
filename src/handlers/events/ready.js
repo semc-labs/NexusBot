@@ -1,7 +1,8 @@
-import { ChannelMessage, ChannelMessages } from "../../data/models/channel-message.js";
-import { Channel, Channels } from "../../data/models/channel.js";
+import { ChannelMessage, ChannelMessages } from "../../data/models/channel-messages.js";
+import { Channel, Channels } from "../../data/models/channels.js";
 import { Announcement, Announcements } from "../../data/models/announcements.js";
 import { User, Users } from "../../data/models/users.js";
+import { Subscriber } from "../../data/models/subscribers.js";
 import WordPress from "../../utils/wordpress.js";
 
 
@@ -24,6 +25,7 @@ export async function execute(bot, client) {
   await Announcements.setup();
   await User.sync({ force: force });
   await Users.setup();
+  await Subscriber.sync({ force: force });
 
   ChannelMessage.belongsTo(Channel, { foreignKey: 'channelId' });
   Announcement.belongsTo(User, { foreignKey: 'userId' });

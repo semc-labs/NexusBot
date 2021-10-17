@@ -1,7 +1,7 @@
 import moment from "moment";
 
-import { ChannelMessages } from "../../data/models/channel-message.js";
-import { Channels } from "../../data/models/channel.js";
+import { ChannelMessages } from "../../data/models/channel-messages.js";
+import { Channels } from "../../data/models/channels.js";
 import { Announcements } from "../../data/models/announcements.js";
 import { Users } from "../../data/models/users.js";
 import WordPress from "../../utils/wordpress.js";

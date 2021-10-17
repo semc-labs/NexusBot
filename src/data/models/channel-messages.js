@@ -2,10 +2,10 @@ import { Client } from 'discord.js';
 import Sequelize from 'sequelize';
 import Deps from '../../utils/deps.js';
 import { sequelize } from '../sequelize.js';
-import { Channel } from "./channel.js";
+import { Channel } from "./channels.js";
 import moment from 'moment';
 
-export const ChannelMessage = sequelize.define('channel_messages', {
+export const ChannelMessage = sequelize.define('na_channel_messages', {
 	channelId: {
 		type: Sequelize.STRING,
 		allowNull: false

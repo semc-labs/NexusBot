@@ -3,7 +3,7 @@ import { sequelize } from '../sequelize.js';
 import Deps from '../../utils/deps.js';
 import { Client } from 'discord.js';
 
-export const User = sequelize.define('users', {
+export const User = sequelize.define('na_members', {
 	userId: {
 		type: Sequelize.STRING,
 		primaryKey: true,
@@ -38,8 +38,8 @@ export class Users {
 
 	/**
 	 * CREATE / GET a single user
-	 * @param {Message} msg 
-	 * @returns {User[]}
+	 * @param {int} userId 
+	 * @returns {User}
 	 */
 	static async findOrCreate(userId) {
 		// -------------------------------------
@@ -69,7 +69,7 @@ export class Users {
 	/**
 	 * GET all users
 	 * @param {Object} where 
-	 * @returns {Channel[]}
+	 * @returns {User[]}
 	 */
 	static async findAll(where) {
 		return await User.findAll({

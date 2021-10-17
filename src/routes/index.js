@@ -1,7 +1,8 @@
 import express from 'express';
-import { ChannelMessages } from "../data/models/channel-message.js";
-import { Channels } from "../data/models/channel.js";
+import { ChannelMessages } from "../data/models/channel-messages.js";
+import { Channels } from "../data/models/channels.js";
 import { Users } from '../data/models/users.js';
+import { Subscribers } from "../data/models/subscribers.js";
 import { Announcements } from "../data/models/announcements.js";
 import Deps from '../utils/deps.js';
 import { Client } from 'discord.js';
@@ -265,6 +266,20 @@ routes.get('/members/:id', (req, res) => {
 	}
 });
 
+
+
+// GET a list of all our members
+routes.get('/subscribers', async (req, res) => {
+
+	const subscribers = await Subscribers.findAll();
+
+	res.end( JSON.stringify(subscribers, (key, value) =>
+		typeof value === 'bigint'
+			? value.toString()
+			: value // return everything else unchanged
+	) );
+
+});
 
 // REFRESH our SQLITE cache.
 routes.get('/refresh', (req, res) => {
