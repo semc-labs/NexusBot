@@ -76,7 +76,7 @@ export class Announcements {
 	}
 
 
-	static setup(){
+	static async setup(){
 		const bot = Deps.get(Client);
 		const thisAnnouncement = this;
 		const channel = bot.channels.cache.get(process.env.ANNOUNCEMENTS_ID);

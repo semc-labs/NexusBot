@@ -78,7 +78,7 @@ export class Users {
 		});
 	}
 
-	static setup(){
+	static async setup(){
 		const bot = Deps.get(Client);
 
 		const guild = bot.guilds.cache.get(process.env.SERVER_ID);

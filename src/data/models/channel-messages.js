@@ -95,7 +95,7 @@ export class ChannelMessages {
 	/**
 	 * Grab many different channel messages to populate old data
 	 */
-	static setup(){
+	static async setup(){
 		const bot = Deps.get(Client);
 
 		// Loop through cached channels
