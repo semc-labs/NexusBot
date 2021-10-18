@@ -12,3 +12,6 @@ config.js
 personal-notes.txt
 
 *.log
+
+server.cert
+server.key

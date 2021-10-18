@@ -25,7 +25,7 @@ export async function execute(bot, client) {
   await Announcements.setup();
   await User.sync({ force: force });
   await Users.setup();
-  await Subscriber.sync(); // DO NOT FORCE THIS TABLE. You will lose all your subscribers.
+  //await Subscriber.sync(); // DO NOT FORCE THIS TABLE. You will lose all your subscribers.
 
   ChannelMessage.belongsTo(Channel, { foreignKey: 'channelId' });
   Announcement.belongsTo(User, { foreignKey: 'userId' });

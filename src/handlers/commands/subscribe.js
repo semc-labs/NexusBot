@@ -1,9 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import Sequelize from 'sequelize';
 import { EMAIL_REGEX } from "../../utils/regex.js";
-import { Subscribers } from '../../data/models/subscribers.js';
-
-const { QueryTypes } = Sequelize;
+import axios from "axios";
 
 export const data = new SlashCommandBuilder()
   .setName('subscribe')
@@ -21,12 +18,26 @@ export async function execute(interaction) {
     return await interaction.reply({ content: `Sorry, but the email "${email}" is invalid.`, ephemeral: true });
   }
 
-  const subscriber = await Subscribers.findOrCreate(email);
+  
+  try{
+    const subscriber = await axios.post(`https://${process.env.WP_DOMAIN}/wp-json/newsletter/v1/subscribe`,
+      {
+        email: email,
+        lists: [1],
+        api_key: process.env.NEWSLETTER_KEY // NOTE: Newsletter supports v2 Rest API however it clashes with our other JWT login for creating posts. This is a workaround to avoid going through basic auth
+      },
+    )
 
-  if(subscriber){
-    console.log(`${email} Subscribed!`);
-    return await interaction.reply({ content: `Thank you! "${email}" has been subscribed!`, ephemeral: true });
-  }
+    //console.log(subscriber);
+
+    if(subscriber){
+      console.log(`${email} Subscribed!`);
+      return await interaction.reply({ content: `Thank you! "${email}" has been subscribed!`, ephemeral: true });
+    }
+  }catch(e){
+    // Error
+    return await interaction.reply({ content: `! ${e}`, ephemeral: true });
+  } 
 
   await interaction.reply({ content: `Unable to subscribe`, ephemeral: true });
 }
