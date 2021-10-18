@@ -10,3 +10,8 @@ config.js
 /old
 
 personal-notes.txt
+
+*.log
+
+server.cert
+server.key

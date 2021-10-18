@@ -4,7 +4,7 @@ import { sequelize } from '../sequelize.js';
 import Deps from '../../utils/deps.js';
 import { Client } from 'discord.js';
 
-export const Announcement = sequelize.define('announcements', {
+export const Announcement = sequelize.define('na_announcements', {
 	announcementId: {
 		type: Sequelize.STRING,
 		allowNull: false,
@@ -76,7 +76,7 @@ export class Announcements {
 	}
 
 
-	static setup(){
+	static async setup(){
 		const bot = Deps.get(Client);
 		const thisAnnouncement = this;
 		const channel = bot.channels.cache.get(process.env.ANNOUNCEMENTS_ID);

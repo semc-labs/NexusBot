@@ -2,6 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import { clientId, guildId, token } from './config.js';
+import { readdirSync } from "fs";
 
 // const commands = [
 // 	new SlashCommandBuilder().setName('ping').setDescription('Replies with pong!'),
@@ -15,7 +16,8 @@ const commands = [];
 const commandFiles  = readdirSync('./src/handlers/commands');
 
 for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
+	const command = await import(`../handlers/commands/${file}`);
+
 	commands.push(command.data.toJSON());
 }
 

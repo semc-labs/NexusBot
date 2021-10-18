@@ -2,10 +2,10 @@ import { Client } from 'discord.js';
 import Sequelize from 'sequelize';
 import Deps from '../../utils/deps.js';
 import { sequelize } from '../sequelize.js';
-import { Channel } from "./channel.js";
+import { Channel } from "./channels.js";
 import moment from 'moment';
 
-export const ChannelMessage = sequelize.define('channel_messages', {
+export const ChannelMessage = sequelize.define('na_channel_messages', {
 	channelId: {
 		type: Sequelize.STRING,
 		allowNull: false
@@ -48,7 +48,7 @@ export class ChannelMessages {
 				where: { channelId: channelId, date: date }
 			});
 		}catch(e){
-			console.log('ChannelMessages findOne ', e);
+			console.error('ChannelMessages findOne ', e);
 		}
 
 		return false;
@@ -75,7 +75,7 @@ export class ChannelMessages {
 			}
 			return true;
 		}catch(e){
-			console.log('ChannelMessages update ', e);
+			console.error('ChannelMessages update ', e);
 			return false;
 		}
 	}
@@ -95,7 +95,7 @@ export class ChannelMessages {
 	/**
 	 * Grab many different channel messages to populate old data
 	 */
-	static setup(){
+	static async setup(){
 		const bot = Deps.get(Client);
 
 		// Loop through cached channels

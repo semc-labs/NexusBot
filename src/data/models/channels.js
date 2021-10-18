@@ -3,7 +3,7 @@ import { sequelize } from '../sequelize.js';
 import Deps from '../../utils/deps.js';
 import { Client } from 'discord.js';
 
-export const Channel = sequelize.define('channels', {
+export const Channel = sequelize.define('na_channels', {
 	channelId: {
 		type: Sequelize.STRING,
 		primaryKey: true,

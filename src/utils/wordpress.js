@@ -60,7 +60,7 @@ export default class WordPress {
 					}
 				);
 			}catch(e) {
-				console.log('WP postAnnouncement: ',e.message);
+				console.error('WP postAnnouncement: ',e.message);
 			}
 		}
 	}
