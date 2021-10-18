@@ -5,7 +5,7 @@ import axios from "axios";
 export const data = new SlashCommandBuilder()
   .setName('subscribe')
   .setDescription('Subscribe to Nexus Aurora emails!')
-  .addStringOption(option => option.setName('email').setDescription('Enter your email'));
+  .addStringOption(option => option.setName('email').setRequired(true).setDescription('Enter your email'));
 export async function execute(interaction) {
 
   const email = interaction.options.getString('email');
