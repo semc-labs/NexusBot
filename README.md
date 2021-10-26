@@ -1,7 +1,7 @@
 # NexusBot
 Work in Progress 
 
-A simple discord bot which will track channel messages and integrate with WordPress.
+A simple discord bot which will track channel messages and integrate with WordPress, and also manages adding people to Nexus Aurora newsletter.
 
 Future ideas include an admin center for viewing statistics and taking actions without posting on discord.
 
