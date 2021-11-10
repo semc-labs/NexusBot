@@ -12,6 +12,9 @@ import WordPress from '../utils/wordpress.js';
 
 
 export const routes = express();
+let memberCount = 0;
+let onlineMembers = 0;
+let memberCacheTime = 0;
 
 routes.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
@@ -149,6 +152,32 @@ routes.get('/announcements', (req, res) => {
 		res.end( JSON.stringify(announcements) );
 	});
 });
+
+
+// GET a list of all our members
+routes.get('/online', async (req, res) => {
+	if (memberCacheTime < Date.now()) {
+		console.log("Updating member count...");
+		// only update member count once a minute
+		memberCacheTime = Date.now() + 60 * 1000;
+
+		const bot = Deps.get(Client);
+
+		const guild = bot.guilds.cache.get(process.env.SERVER_ID);
+
+		const members = await guild.members.fetch();
+
+		if (members) {
+			memberCount = members.size;
+			const online = members.filter((member) => !member.user?.bot && member.presence?.status != 'offline').map((member) => member);
+			onlineMembers = online.length;
+		}
+
+	}
+
+	res.end( JSON.stringify({ memberCount: memberCount, onlineMembers: onlineMembers}) );
+});
+
 
 // GET a list of all our members
 routes.get('/members', async (req, res) => {
