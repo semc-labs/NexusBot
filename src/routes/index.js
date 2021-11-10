@@ -15,6 +15,7 @@ export const routes = express();
 let memberCount = 0;
 let onlineMembers = 0;
 let memberCacheTime = 0;
+let recentChannelMessages = [];
 
 routes.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
@@ -154,8 +155,9 @@ routes.get('/announcements', (req, res) => {
 });
 
 
-// GET a list of all our members
+// GET a list of all our online members
 routes.get('/online', async (req, res) => {
+	//https://stackoverflow.com/questions/68775726/discord-js-v13-member-presence-is-undefined
 	if (memberCacheTime < Date.now()) {
 		console.log("Updating member count...");
 		// only update member count once a minute
@@ -173,9 +175,27 @@ routes.get('/online', async (req, res) => {
 			onlineMembers = online.length;
 		}
 
+		if (req.query.channelId) {
+			const channel = bot.channels.cache.get(req.query.channelId);
+			if (channel) {
+				const messages = await channel.messages.fetch({ limit: 100 });
+				recentChannelMessages[req.query.channelId] = {
+					channel: channel.name,
+					messages: messages.map(message => {
+						return {
+							username: message.author.username,
+							avatar: message.author.displayAvatarURL(),
+							message: message.cleanContent,
+							date: message.createdAt
+						}
+					})
+				}
+
+			}
+		}
 	}
 
-	res.end( JSON.stringify({ memberCount: memberCount, onlineMembers: onlineMembers}) );
+	res.end( JSON.stringify({ memberCount: memberCount, onlineMembers: onlineMembers, messages: recentChannelMessages[req.query.channelId]}) );
 });
 
 
