@@ -178,7 +178,7 @@ routes.get('/online', async (req, res) => {
 		if (req.query.channelId) {
 			const channel = bot.channels.cache.get(req.query.channelId);
 			if (channel) {
-				const messages = await channel.messages.fetch({ limit: 10 });
+				const messages = await channel.messages.fetch({ limit: 100 });
 				recentChannelMessages[req.query.channelId] = {
 					channel: channel.name,
 					messages: messages.map(message => {
